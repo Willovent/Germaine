@@ -10,7 +10,7 @@ namespace HouseOvent.Business
     {
         private OventApiService ApiService = new OventApiService();
 
-        public async Task HandleCommandAsync(string command,string obj,string room)
+        public async Task HandleLightStoreAsync(string command,string obj,string room)
         {
             switch (obj)
             {
@@ -18,6 +18,22 @@ namespace HouseOvent.Business
                 case "volet": await HandleStores(command,room); break;
             }
         }
+
+        public async Task PowerMusique() => await ApiService.AllumeEteinsLaMusique();
+        
+        public async Task HandlePlaylist(int playlistNumber)
+        {
+            switch (playlistNumber)
+            {
+                case 1: await ApiService.SelectionneLePreset1(); break;
+                case 2: await ApiService.SelectionneLePreset2(); break;
+                case 3: await ApiService.SelectionneLePreset3(); break;
+                case 4: await ApiService.SelectionneLePreset4(); break;
+                case 5: await ApiService.SelectionneLePreset5(); break;
+                case 6: await ApiService.SelectionneLePreset6(); break;
+            }
+        }
+
         private async Task HandleLights(string command, string room)
         {
             switch (command)

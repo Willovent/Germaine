@@ -12,7 +12,7 @@ namespace HouseOvent
 {
     public sealed partial class MainPage : Page
     {
-        private SpeechRecognizer speechRecognizer = new SpeechRecognizer(SpeechRecognizer.SystemSpeechLanguage);
+        private SpeechRecognizer speechRecognizer;
         private CoreDispatcher dispatcher;
         private OventBusinessService oventService = new OventBusinessService();
         public MainPage()
@@ -52,7 +52,18 @@ namespace HouseOvent
         private async void ContinuousRecognitionSession_ResultGenerated(SpeechContinuousRecognitionSession sender, SpeechContinuousRecognitionResultGeneratedEventArgs args)
         {
             var result = args.Result.SemanticInterpretation.Properties.First().Value[0].Split('|');
-            await oventService.HandleCommandAsync(result[0], result[1], result[2]);
+            switch (result[0])
+            {
+                case "lightstore": await oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
+                case "musique": 
+                    if(result[1] == "power")
+                    {
+                        await oventService.PowerMusique();
+                    } else if (result[1] == "playlist") {
+                        await oventService.HandlePlaylist(int.Parse(result[2]));
+                    }
+                    break;
+            }
             speechRecognizer.ContinuousRecognitionSession.Resume();
         }
 

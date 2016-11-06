@@ -53,5 +53,21 @@ namespace HouseOvent.Business
 
         public async Task FermeToutAsync() => await GetAsync("LightScene_15");
 
+        public async Task AllumeEteinsLaMusique() => await GetAsync("BoseSoundTouchCommand_31");
+
+        public async Task PlayPauseLaMusique() => await GetAsync("BoseSoundTouchCommand_32");
+
+        public async Task SelectionneLePreset1() => await GetAsync("BoseSoundTouchCommand_34");
+
+        public async Task SelectionneLePreset2() => await GetAsync("BoseSoundTouchCommand_35");
+
+        public async Task SelectionneLePreset3() => await GetAsync("BoseSoundTouchCommand_36");
+
+        public async Task SelectionneLePreset4() => await GetAsync("BoseSoundTouchCommand_37");
+
+        public async Task SelectionneLePreset5() => await GetAsync("BoseSoundTouchCommand_38");
+
+        public async Task SelectionneLePreset6() => await GetAsync("BoseSoundTouchCommand_39");
+
     }
 }
