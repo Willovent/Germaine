@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN"
+                  "http://www.w3.org/TR/speech-grammar/grammar.dtd">
+
+<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="fr-Fr"
+         version="1.0" mode="voice" root="basicCmd" tag-format="semantics/1.0">
+
+  <meta name="author" content="Klein William"/>
+
+  <rule id="basicCmd" scope="public">
+    <example> germaine, ouvre les volets</example>
+    <example> germaine, éteins les lumières </example>
+    <ruleref uri="#command"/>
+  </rule>
+
+  <rule id="command" scope="private">
+    germaine,
+    <item>
+      <ruleref uri="#action"/>
+      <tag> out =rules.latest(); </tag>
+    </item>
+    <item>
+      <ruleref uri="#object"/>
+      <tag> out += "|" + rules.latest(); </tag>
+    </item>
+    <item>
+      <ruleref uri="#place"/>
+      <tag> out += "|" + rules.latest(); </tag>
+    </item>
+  </rule>
+
+  <rule id="action" scope="private">
+    <one-of>
+      <item>
+        <one-of>
+          <item> ouvre </item>
+          <item> allume</item>
+          <item> monte</item>
+        </one-of>
+        <tag> out="open"; </tag>
+      </item>
+      <item>
+        <one-of>
+          <item> ferme </item>
+          <item> éteins </item>
+          <item> baisse </item>
+          <item> descend </item>
+        </one-of>
+        <tag> out="close"; </tag>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="object" scope="private">
+    <item repeat="0-1">
+      <one-of>
+        <item> le </item>
+        <item> la </item>
+        <item> les </item>
+      </one-of>
+    </item>
+
+
+    <one-of>
+      <item>
+        lumières <tag> out="light"; </tag>
+      </item>
+      <item>
+        lumière <tag> out="light"; </tag>
+      </item>
+      <item>
+        volet <tag> out="volet"; </tag>
+      </item>
+      <item>
+        volets <tag> out="volet"; </tag>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="place" scope="private">
+    <item repeat="0-1">
+      <one-of>
+        <item> à </item>
+        <item> au </item>
+        <item> du </item>
+        <item> de la </item>
+      </one-of>
+    </item>
+
+
+    <one-of>
+      <item>
+        salon <tag> out="salon"; </tag>
+      </item>
+      <item>
+        PC <tag> out="PC"; </tag>
+      </item>
+      <item>
+        télévision <tag> out="TV"; </tag>
+      </item>
+      <item>
+        télé<tag> out="TV"; </tag>
+      </item>
+      <item>
+        TV<tag> out="TV"; </tag>
+      </item>
+    </one-of>
+  </rule>
+
+</grammar>
