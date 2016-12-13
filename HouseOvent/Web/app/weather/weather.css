@@ -1,0 +1,33 @@
+:host {
+  position: relative;
+  padding: 20px;
+  height: 120px;
+  width: 350px;
+}
+:host .container.appear .city {
+  animation: appear 2s forwards;
+}
+:host .container.appear .temp {
+  animation: appear 2s .5s forwards;
+}
+:host .container.appear .icon {
+  animation: appear 2s .2s forwards;
+}
+:host .container .line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+:host .container .city {
+  opacity: 0;
+  font-size: 24px;
+  text-align: center;
+}
+:host .container .temp {
+  opacity: 0;
+  font-size: 45px;
+}
+:host .container .icon {
+  opacity: 0;
+  float: left;
+}

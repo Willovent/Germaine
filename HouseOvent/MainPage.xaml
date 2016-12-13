@@ -7,14 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel>
-            <TextBlock Name="Status" Text=""></TextBlock>
-            <!--<Button Click="Button_Click">Start things</Button>
-            <Button Click="Button_Click_2">Stop things</Button>-->
-            <TextBlock Name="Result" Text=""></TextBlock>
-            <!--<ComboBox x:Name="cbLanguageSelection" Margin="10" Width="200"/>-->
-            <TextBlock Name="RulePath" Text=""></TextBlock>
+    <Grid Background="Black">
+        <WebView Source="http://localhost:4200" DefaultBackgroundColor="Black"/>
+        <StackPanel VerticalAlignment="Bottom">           
+            <TextBlock Name="Result" Foreground="White" Margin="10" FontSize="20" FontFamily="Segoe UI Emoji" ></TextBlock>
         </StackPanel>
+        <MediaElement Name="Media"></MediaElement>
     </Grid>
 </Page>

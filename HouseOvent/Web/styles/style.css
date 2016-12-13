@@ -1,0 +1,71 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300italic,300);
+body {
+  font-family: lato;
+  overflow: hidden;
+}
+.clear:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.background-holder {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+}
+.background-holder.nice-background:before {
+  background-image: url('/assets/bg.jpg');
+  padding: 35px;
+  -webkit-filter: blur(15px);
+  top: -25px;
+  left: -25px;
+}
+.background-holder:before {
+  content: '';
+  display: block;
+  position: absolute;
+  background: #000;
+  background-size: auto 110%;
+  width: 100vw;
+  height: 100vh;
+}
+.component {
+  margin: 10px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  color: #eee;
+  display: block;
+  border-radius: 2px;
+}
+.component:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.left-col {
+  float: left;
+}
+.right-col {
+  float: right;
+}
+.center-col {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform-origin: top;
+    transform: rotateX(180deg);
+  }
+  30% {
+    transform: rotateX(-30deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}

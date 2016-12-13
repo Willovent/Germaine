@@ -11,6 +11,7 @@
   <rule id="basicCmd" scope="public">
     <example> germaine, ouvre les volets</example>
     <example> germaine, éteins les lumières </example>
+    germaine,
     <one-of>
       <item>
         <ruleref uri="#lightstore"/>
@@ -23,7 +24,6 @@
   </rule>
 
   <rule id="musique" scope="private">
-    germaine,
     <tag> out = "musique" </tag>
     <one-of>
       <item>
@@ -77,7 +77,6 @@
 
 
   <rule id="lightstore" scope="private">
-    germaine,
     <tag> out = "lightstore" </tag>
     <item>
       <ruleref uri="#action"/>

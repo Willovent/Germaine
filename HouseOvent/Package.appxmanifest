@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" IgnorableNamespaces="uap mp uap3">
   <Identity Name="724248b2-4675-4a06-9222-96d9380dfbfd" Publisher="CN=Ovent" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="724248b2-4675-4a06-9222-96d9380dfbfd" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
@@ -25,6 +25,30 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <Capability Name="privateNetworkClientServer" />
+    <Capability Name="allJoyn" />
+    <Capability Name="codeGeneration" />
+    <Capability Name="internetClientServer" />
+    <uap:Capability Name="videosLibrary" />
+    <uap:Capability Name="chat" />
+    <uap:Capability Name="phoneCall" />
+    <uap:Capability Name="voipCall" />
+    <uap:Capability Name="musicLibrary" />
+    <uap:Capability Name="enterpriseAuthentication" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="sharedUserCertificates" />
+    <uap:Capability Name="contacts" />
+    <uap3:Capability Name="userNotificationListener" />
+    <uap:Capability Name="userAccountInformation" />
+    <uap:Capability Name="blockedChatMessages" />
+    <uap3:Capability Name="backgroundMediaPlayback" />
+    <uap:Capability Name="objects3D" />
+    <uap:Capability Name="appointments" />
+    <uap:Capability Name="removableStorage" />
+    <uap3:Capability Name="remoteSystem" />
     <DeviceCapability Name="microphone" />
+    <DeviceCapability Name="bluetooth" />
+    <DeviceCapability Name="location" />
+    <DeviceCapability Name="proximity" />
+    <DeviceCapability Name="webcam" />
   </Capabilities>
 </Package>
