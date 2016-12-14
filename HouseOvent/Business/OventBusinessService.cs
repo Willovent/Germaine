@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using OventService;
 
 namespace HouseOvent.Business
 {
@@ -14,27 +11,27 @@ namespace HouseOvent.Business
         {
             switch (obj)
             {
-                case "light": await HandleLights(command,room); break;
-                case "volet": await HandleStores(command,room); break;
+                case "light": await HandleLightsAsync(command,room); break;
+                case "volet": await HandleStoresAsync(command,room); break;
             }
         }
 
-        public async Task PowerMusique() => await ApiService.AllumeEteinsLaMusique();
+        public async Task PowerMusiqueAsync() => await ApiService.AllumeEteinsLaMusiqueAsync();
         
-        public async Task HandlePlaylist(int playlistNumber)
+        public async Task HandlePlaylistAsync(int playlistNumber)
         {
             switch (playlistNumber)
             {
-                case 1: await ApiService.SelectionneLePreset1(); break;
-                case 2: await ApiService.SelectionneLePreset2(); break;
-                case 3: await ApiService.SelectionneLePreset3(); break;
-                case 4: await ApiService.SelectionneLePreset4(); break;
-                case 5: await ApiService.SelectionneLePreset5(); break;
-                case 6: await ApiService.SelectionneLePreset6(); break;
+                case 1: await ApiService.SelectionneLePreset1Async(); break;
+                case 2: await ApiService.SelectionneLePreset2Async(); break;
+                case 3: await ApiService.SelectionneLePreset3Async(); break;
+                case 4: await ApiService.SelectionneLePreset4Async(); break;
+                case 5: await ApiService.SelectionneLePreset5Async(); break;
+                case 6: await ApiService.SelectionneLePreset6Async(); break;
             }
         }
 
-        private async Task HandleLights(string command, string room)
+        private async Task HandleLightsAsync(string command, string room)
         {
             switch (command)
             {
@@ -43,7 +40,7 @@ namespace HouseOvent.Business
             }
         }
 
-        private async Task HandleStores(string command, string room)
+        private async Task HandleStoresAsync(string command, string room)
         {
             switch (command)
             {

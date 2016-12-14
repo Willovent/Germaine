@@ -4,12 +4,10 @@ using Windows.Media.SpeechRecognition;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Core;
 using Windows.Globalization;
-using System.Collections.Generic;
 using System.Linq;
 using HouseOvent.Business;
 using Windows.Media.SpeechSynthesis;
-using System.IO;
-using Windows.UI.Popups;
+using OventService;
 
 namespace HouseOvent
 {
@@ -24,19 +22,13 @@ namespace HouseOvent
             this.InitializeComponent();
             speechSynthesizer.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault(x => x.Language == "fr-FR");
             dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
-            ListenToMe(new Language("fr-FR"));
+            ListenToMeAsync(new Language("fr-FR"));
         }
 
-        async Task ListenToMe(Language recognizerLanguage)
+        async void ListenToMeAsync(Language recognizerLanguage)
         {
-            //await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-            // {
-            //     var media = new MediaElement();
-            //     var stream = await speechSynthesizer.SynthesizeTextToStreamAsync("Ok Chef !");
-            //     media.SetSource(stream, stream.ContentType);
-            //     media.Play();
-            // });
-            //await new KodiBusinessService().PlayMovie("");
+
+            await new KodiBusinessService().PlayMovieAsync("Docteur Strange");
             if (speechRecognizer != null)
             {
                 speechRecognizer.ContinuousRecognitionSession.Completed -= ContinuousRecognitionSession_Completed;
@@ -77,15 +69,15 @@ namespace HouseOvent
             var result = args.Result.SemanticInterpretation.Properties.First().Value[0].Split('|');
             switch (result[0])
             {
-                case "lightstore": oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
+                case "lightstore": await oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
                 case "musique":
                     if (result[1] == "power")
                     {
-                        oventService.PowerMusique();
+                        await oventService.PowerMusiqueAsync();
                     }
                     else if (result[1] == "playlist")
                     {
-                        oventService.HandlePlaylist(int.Parse(result[2]));
+                        await oventService.HandlePlaylistAsync(int.Parse(result[2]));
                     }
                     break;
             }
@@ -102,6 +94,33 @@ namespace HouseOvent
         private async void SpeechRecognizer_HypothesisGenerated(SpeechRecognizer sender, SpeechRecognitionHypothesisGeneratedEventArgs args)
         {
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Result.Text = args.Hypothesis.Text);
+        }
+
+        private bool canSpeak = true;
+
+        private async Task SaySomethingAsync(string sentance)
+        {
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+             {
+                 if (canSpeak)
+                 {
+                     var stream = await speechSynthesizer.SynthesizeTextToStreamAsync(sentance);
+                     try
+                     {
+                         Media.SetSource(stream, stream.ContentType);
+                         Media.Play();
+                     }
+                     catch
+                     {
+                         canSpeak = false;
+                         Result.Text = sentance;
+                     }
+                 }
+                 else
+                 {
+                     Result.Text = sentance;
+                 }
+             });
         }
     }
 }

@@ -129,8 +129,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Business\KodiBusinessService.cs" />
-    <Compile Include="Business\OventApiService.cs" />
     <Compile Include="Business\OventBusinessService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -171,7 +169,12 @@
       <Name>Windows IoT Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <Import Project="..\KodiRpc\KodiRpc.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\OventService\OventService.csproj">
+      <Project>{6c0861a8-6edf-451a-9a18-52e0b6f12c6b}</Project>
+      <Name>OventService</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

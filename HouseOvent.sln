@@ -5,13 +5,11 @@ VisualStudioVersion = 15.0.25928.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseOvent", "HouseOvent\HouseOvent.csproj", "{1368B117-93D5-4EB4-BA97-265C977F28F4}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KodiRpc", "KodiRpc\KodiRpc.shproj", "{0D6D0FC2-C84F-49D0-BB96-317FB6AA2543}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OventService", "OventService\OventService.csproj", "{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodiRpcApi", "KodiRpcApi\KodiRpcApi.csproj", "{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		KodiRpc\KodiRpc.projitems*{0d6d0fc2-c84f-49d0-bb96-317fb6aa2543}*SharedItemsImports = 13
-		KodiRpc\KodiRpc.projitems*{1368b117-93d5-4eb4-ba97-265c977f28f4}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -43,6 +41,38 @@ Global
 		{1368B117-93D5-4EB4-BA97-265C977F28F4}.Release|x86.ActiveCfg = Release|x86
 		{1368B117-93D5-4EB4-BA97-265C977F28F4}.Release|x86.Build.0 = Release|x86
 		{1368B117-93D5-4EB4-BA97-265C977F28F4}.Release|x86.Deploy.0 = Release|x86
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|ARM.ActiveCfg = Debug|ARM
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|ARM.Build.0 = Debug|ARM
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|x64.ActiveCfg = Debug|x64
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|x64.Build.0 = Debug|x64
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|x86.ActiveCfg = Debug|x86
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Debug|x86.Build.0 = Debug|x86
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|ARM.ActiveCfg = Release|ARM
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|ARM.Build.0 = Release|ARM
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|x64.ActiveCfg = Release|x64
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|x64.Build.0 = Release|x64
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|x86.ActiveCfg = Release|x86
+		{6C0861A8-6EDF-451A-9A18-52E0B6F12C6B}.Release|x86.Build.0 = Release|x86
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|ARM.Build.0 = Debug|ARM
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|x64.ActiveCfg = Debug|x64
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|x64.Build.0 = Debug|x64
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|x86.ActiveCfg = Debug|x86
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Debug|x86.Build.0 = Debug|x86
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|ARM.ActiveCfg = Release|ARM
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|ARM.Build.0 = Release|ARM
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|x64.ActiveCfg = Release|x64
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|x64.Build.0 = Release|x64
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|x86.ActiveCfg = Release|x86
+		{BD288CCD-D09C-430B-895F-E0E2AE57B2C8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
