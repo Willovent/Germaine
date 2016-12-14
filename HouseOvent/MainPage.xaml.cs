@@ -7,6 +7,9 @@ using Windows.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using HouseOvent.Business;
+using Windows.Media.SpeechSynthesis;
+using System.IO;
+using Windows.UI.Popups;
 
 namespace HouseOvent
 {
@@ -14,30 +17,37 @@ namespace HouseOvent
     {
         private SpeechRecognizer speechRecognizer;
         private CoreDispatcher dispatcher;
+        private SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
         private OventBusinessService oventService = new OventBusinessService();
         public MainPage()
         {
             this.InitializeComponent();
+            speechSynthesizer.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault(x => x.Language == "fr-FR");
             dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
-            //PopulateLanguageDropdown();
-           ListenToMe(new Language("fr-FR"));
+            ListenToMe(new Language("fr-FR"));
         }
 
         async Task ListenToMe(Language recognizerLanguage)
         {
+            //await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            // {
+            //     var media = new MediaElement();
+            //     var stream = await speechSynthesizer.SynthesizeTextToStreamAsync("Ok Chef !");
+            //     media.SetSource(stream, stream.ContentType);
+            //     media.Play();
+            // });
+            //await new KodiBusinessService().PlayMovie("");
             if (speechRecognizer != null)
             {
-                // cleanup prior to re-initializing this scenario.
-                speechRecognizer.StateChanged -= SpeechRecognizer_StateChanged;
                 speechRecognizer.ContinuousRecognitionSession.Completed -= ContinuousRecognitionSession_Completed;
                 speechRecognizer.ContinuousRecognitionSession.ResultGenerated -= ContinuousRecognitionSession_ResultGenerated;
                 speechRecognizer.HypothesisGenerated -= SpeechRecognizer_HypothesisGenerated;
+                speechRecognizer.StateChanged -= SpeechRecognizer_StateChanged;
 
                 this.speechRecognizer.Dispose();
                 this.speechRecognizer = null;
             }
             this.speechRecognizer = new SpeechRecognizer(recognizerLanguage);
-            speechRecognizer.StateChanged += SpeechRecognizer_StateChanged;
             var storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///rules.xml"));
             var grammarfileConstraint = new SpeechRecognitionGrammarFileConstraint(storageFile);
             speechRecognizer.Constraints.Add(grammarfileConstraint);
@@ -45,47 +55,44 @@ namespace HouseOvent
 
             speechRecognizer.ContinuousRecognitionSession.ResultGenerated += ContinuousRecognitionSession_ResultGenerated;
             speechRecognizer.HypothesisGenerated += SpeechRecognizer_HypothesisGenerated;
+            speechRecognizer.StateChanged += SpeechRecognizer_StateChanged;
             speechRecognizer.ContinuousRecognitionSession.Completed += ContinuousRecognitionSession_Completed;
             await speechRecognizer.ContinuousRecognitionSession.StartAsync(SpeechContinuousRecognitionMode.PauseOnRecognition);
         }
 
+        private async void SpeechRecognizer_StateChanged(SpeechRecognizer sender, SpeechRecognizerStateChangedEventArgs args)
+        {
+            if (args.State == SpeechRecognizerState.SoundEnded)
+            {
+                await Task.Delay(2000);
+                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Result.Text = "");
+            }
+        }
+
         private async void ContinuousRecognitionSession_ResultGenerated(SpeechContinuousRecognitionSession sender, SpeechContinuousRecognitionResultGeneratedEventArgs args)
         {
+            var stream = await speechSynthesizer.SynthesizeTextToStreamAsync("Ok Chef !");
+
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Result.Text = args.Result.Text);
             var result = args.Result.SemanticInterpretation.Properties.First().Value[0].Split('|');
             switch (result[0])
             {
-                case "lightstore": await oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
-                case "musique": 
-                    if(result[1] == "power")
+                case "lightstore": oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
+                case "musique":
+                    if (result[1] == "power")
                     {
-                        await oventService.PowerMusique();
-                    } else if (result[1] == "playlist") {
-                        await oventService.HandlePlaylist(int.Parse(result[2]));
+                        oventService.PowerMusique();
+                    }
+                    else if (result[1] == "playlist")
+                    {
+                        oventService.HandlePlaylist(int.Parse(result[2]));
                     }
                     break;
             }
             speechRecognizer.ContinuousRecognitionSession.Resume();
+            await Task.Delay(2000);
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Result.Text = "");
         }
-
-        //private void PopulateLanguageDropdown()
-        //{
-        //    Language defaultLanguage = SpeechRecognizer.SystemSpeechLanguage;
-        //    IEnumerable<Language> supportedLanguages = SpeechRecognizer.SupportedTopicLanguages;
-        //    foreach (Language lang in supportedLanguages)
-        //    {
-        //        ComboBoxItem item = new ComboBoxItem();
-        //        item.Tag = lang;
-        //        item.Content = lang.DisplayName;
-
-        //        cbLanguageSelection.Items.Add(item);
-        //        if (lang.LanguageTag == defaultLanguage.LanguageTag)
-        //        {
-        //            item.IsSelected = true;
-        //            cbLanguageSelection.SelectedItem = item;
-        //        }
-        //    }
-        //}
-
 
         private async void ContinuousRecognitionSession_Completed(SpeechContinuousRecognitionSession sender, SpeechContinuousRecognitionCompletedEventArgs args)
         {
@@ -95,23 +102,6 @@ namespace HouseOvent
         private async void SpeechRecognizer_HypothesisGenerated(SpeechRecognizer sender, SpeechRecognitionHypothesisGeneratedEventArgs args)
         {
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Result.Text = args.Hypothesis.Text);
-        }
-
-        private async void SpeechRecognizer_StateChanged(SpeechRecognizer sender, SpeechRecognizerStateChangedEventArgs args)
-        {
-            await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Status.Text = args.State.ToString());
-        }
-
-        //private async void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        //{
-        //    var item = (ComboBoxItem)(cbLanguageSelection.SelectedItem);
-        //    var newLanguage = (Language)item.Tag;
-        //    await ListenToMe(newLanguage);
-        //}
-
-        private async void Button_Click_2(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            await speechRecognizer.StopRecognitionAsync();
         }
     }
 }

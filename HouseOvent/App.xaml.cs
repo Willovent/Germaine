@@ -1,5 +1,7 @@
-﻿using System;
-using Microsoft.ApplicationInsights;
+﻿using Restup.Webserver.File;
+using Restup.Webserver.Http;
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -12,13 +14,23 @@ namespace HouseOvent
     {
         public App()
         {
-            WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
 
+        async Task InitServer()
+        {
+            var configuration = new HttpServerConfiguration()
+                 .ListenOnPort(4200)
+                 .RegisterRoute(new StaticFileRouteHandler("Web"))
+                 .EnableCors();
+            var httpServer = new HttpServer(configuration);
+            await httpServer.StartServerAsync();
+        }
+
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            InitServer();
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {

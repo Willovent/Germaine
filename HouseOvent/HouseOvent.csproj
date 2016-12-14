@@ -11,12 +11,14 @@
     <AssemblyName>HouseOvent</AssemblyName>
     <DefaultLanguage>fr-FR</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>HouseOvent_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -93,12 +95,41 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="rules.xml" />
+    <Content Include="Web\app\index.js" />
+    <Content Include="Web\app\main.html" />
+    <Content Include="Web\app\meetings\meetings.css" />
+    <Content Include="Web\app\meetings\meetings.html" />
+    <Content Include="Web\app\nextstop\nextStop.css" />
+    <Content Include="Web\app\nextstop\nextStop.html" />
+    <Content Include="Web\app\time\time.css" />
+    <Content Include="Web\app\time\time.html" />
+    <Content Include="Web\app\weather\weather.css" />
+    <Content Include="Web\app\weather\weather.html" />
+    <Content Include="Web\assets\bg.jpg" />
+    <Content Include="Web\favicon.ico" />
+    <Content Include="Web\fonts\iconvault_forecastfont.svg" />
+    <Content Include="Web\index.html" />
+    <Content Include="Web\main.js" />
+    <Content Include="Web\styles\font.css" />
+    <Content Include="Web\styles\func.css" />
+    <Content Include="Web\styles\style.css" />
+    <Content Include="Web\styles\weather-icon.css" />
+    <Content Include="Web\system-config.js" />
+    <Content Include="Web\vendor\es6-shim\es6-shim.js" />
+    <Content Include="Web\vendor\reflect-metadata\Reflect.js" />
+    <Content Include="Web\vendor\systemjs\dist\system.src.js" />
+    <Content Include="Web\vendor\zone.js\dist\zone.js" />
     <None Include="project.json" />
+    <None Include="Web\.npmignore" />
+    <None Include="Web\fonts\iconvault_forecastfont.eot" />
+    <Content Include="Web\fonts\iconvault_forecastfont.ttf" />
+    <None Include="Web\fonts\iconvault_forecastfont.woff" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Business\KodiBusinessService.cs" />
     <Compile Include="Business\OventApiService.cs" />
     <Compile Include="Business\OventBusinessService.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -133,14 +164,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="WindowsIoT, Version=10.0.10586.0">
+    <SDKReference Include="WindowsDesktop, Version=10.0.14393.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsIoT, Version=10.0.14393.0">
       <Name>Windows IoT Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
+  <Import Project="..\KodiRpc\KodiRpc.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)Web\* $(TargetDir)Web</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
