@@ -20,7 +20,7 @@ namespace HouseOvent
             this.InitializeComponent();
             dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
             //PopulateLanguageDropdown();
-            ListenToMe(new Language("fr-FR"));
+           ListenToMe(new Language("fr-FR"));
         }
 
         async Task ListenToMe(Language recognizerLanguage)
