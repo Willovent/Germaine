@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 
 namespace KodiRpc.Addons
 {
-   public class ExecuteAddon_params1
-   {
+    public class ExecuteAddon_params1
+    {
     }
 }

@@ -8,6 +8,11 @@ using System.Linq;
 using HouseOvent.Business;
 using Windows.Media.SpeechSynthesis;
 using OventService;
+using System.IO;
+using System.Xml.Linq;
+using System.Text;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Storage;
 
 namespace HouseOvent
 {
@@ -17,18 +22,20 @@ namespace HouseOvent
         private CoreDispatcher dispatcher;
         private SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer();
         private OventBusinessService oventService = new OventBusinessService();
+        private KodiBusinessService kodiBusinessService = new KodiBusinessService();
         public MainPage()
         {
             this.InitializeComponent();
             speechSynthesizer.Voice = SpeechSynthesizer.AllVoices.FirstOrDefault(x => x.Language == "fr-FR");
             dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
             ListenToMeAsync(new Language("fr-FR"));
+
+            kodiBusinessService.AllumerLaTeleAsync();
         }
 
         async void ListenToMeAsync(Language recognizerLanguage)
         {
 
-            await new KodiBusinessService().PlayMovieAsync("Docteur Strange");
             if (speechRecognizer != null)
             {
                 speechRecognizer.ContinuousRecognitionSession.Completed -= ContinuousRecognitionSession_Completed;
@@ -41,7 +48,29 @@ namespace HouseOvent
             }
             this.speechRecognizer = new SpeechRecognizer(recognizerLanguage);
             var storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///rules.xml"));
-            var grammarfileConstraint = new SpeechRecognitionGrammarFileConstraint(storageFile);
+            XDocument rules;
+            using (var stream = await storageFile.OpenAsync(Windows.Storage.FileAccessMode.Read))
+            {
+                using (var inputStream = stream.GetInputStreamAt(0))
+                {
+                    rules = XDocument.Load(inputStream.AsStreamForRead());
+                }
+            }
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            var seriesRules = rules.Root.Elements().Where(x => x.Attribute("id")?.Value == "series").First();
+            seriesRules.ReplaceWith(await GenerateRulesForSeries());
+            SanityzeXmlDoc(rules);
+            StorageFolder appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            StorageFile sampleFile = await storageFolder.CreateFileAsync("rules.xml", CreationCollisionOption.ReplaceExisting);
+            using (var stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                using (var outputStream = stream.GetOutputStreamAt(0))
+                {
+                    await outputStream.WriteAsync(Encoding.UTF8.GetBytes(@"<?xml version=""1.0"" encoding=""UTF-8""?>" + rules.ToString()).AsBuffer());
+                }
+            }
+
+            var grammarfileConstraint = new SpeechRecognitionGrammarFileConstraint(sampleFile);
             speechRecognizer.Constraints.Add(grammarfileConstraint);
             var result = await speechRecognizer.CompileConstraintsAsync();
 
@@ -69,14 +98,19 @@ namespace HouseOvent
             var result = args.Result.SemanticInterpretation.Properties.First().Value[0].Split('|');
             switch (result[0])
             {
-                case "lightstore": await oventService.HandleLightStoreAsync(result[1], result[2], result[3]); break;
+                case "lightstore":
+                    await SaySomethingAsync("Ok Chef !");
+                    await oventService.HandleLightStoreAsync(result[1], result[2], result[3]);
+                    break;
                 case "musique":
                     if (result[1] == "power")
                     {
+                        await SaySomethingAsync("Ok Chef !");
                         await oventService.PowerMusiqueAsync();
                     }
                     else if (result[1] == "playlist")
                     {
+                        await SaySomethingAsync("Ok Chef !");
                         await oventService.HandlePlaylistAsync(int.Parse(result[2]));
                     }
                     break;
@@ -121,6 +155,35 @@ namespace HouseOvent
                      Result.Text = sentance;
                  }
              });
+        }
+
+        private async Task<XElement> GenerateRulesForSeries()
+        {
+            var series = await kodiBusinessService.GetSeries();
+            var elem = new XElement("rule", new XAttribute("id", "series"), new XAttribute("scope", "private"));
+            var oneOf = new XElement("one-of");
+            elem.Add(oneOf);
+            foreach (var serie in series)
+            {
+                var current = new XElement("item");
+                current.Value = serie.title;
+                var tag = new XElement("tag");
+                tag.Value = $"out=\"{serie.title}\";";
+                current.Add(tag);
+                oneOf.Add(current);
+            }
+            return elem;
+        }
+        private void SanityzeXmlDoc(XDocument doc)
+        {
+            foreach (var node in doc.Root.Descendants())
+            {
+                if (node.Name.NamespaceName == "")
+                {
+                    node.Attributes("xmlns").Remove();
+                    node.Name = node.Parent.Name.Namespace + node.Name.LocalName;
+                }
+            }
         }
     }
 }

@@ -1,42 +1,43 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN"
-                  "http://www.w3.org/TR/speech-grammar/grammar.dtd">
-
-<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="fr-Fr"
-         version="1.0" mode="voice" root="basicCmd" tag-format="semantics/1.0">
-
-  <meta name="author" content="Klein William"/>
-
+<!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN" "http://www.w3.org/TR/speech-grammar/grammar.dtd"[]>
+<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="fr-Fr" version="1.0" mode="voice" root="basicCmd" tag-format="semantics/1.0">
+  <meta name="author" content="Klein William" />
   <rule id="basicCmd" scope="public">
     <example> germaine, ouvre les volets</example>
     <example> germaine, éteins les lumières </example>
     germaine,
     <one-of>
       <item>
-        <ruleref uri="#lightstore"/>
+        <ruleref uri="#lightstore" />
       </item>
       <item>
-        <ruleref uri="#musique"/>
+        <ruleref uri="#musique" />
+      </item>
+      <item>
+        <ruleref uri="#serie" />
       </item>
     </one-of>
-
   </rule>
-
   <rule id="musique" scope="private">
     <tag> out = "musique" </tag>
     <one-of>
       <item>
-        <ruleref uri="#power"/>
+        <ruleref uri="#power" />
         <tag> out += "|" + rules.latest(); </tag>
       </item>
       <item>
-        <ruleref uri="#playlist"/>
+        <ruleref uri="#playlist" />
         <tag> out += "|" + rules.latest(); </tag>
       </item>
     </one-of>
   </rule>
-
+  <rule id="serie" scope="private">
+    Episode suivant de
+    <tag> out="serie"; </tag><item>
+      <ruleref uri="#series" />
+      <tag> out += "|" + rules.latest(); </tag>
+    </item>
+  </rule>
   <rule id="power" scope="private">
     <item>
       <one-of>
@@ -47,11 +48,9 @@
     </item>
     la musique
   </rule>
-
   <rule id="playlist" scope="private">
     Joue la playlist
-    <tag> out="playlist|"; </tag>
-    <item>
+    <tag> out="playlist|"; </tag><item>
       <one-of>
         <item>
           un <tag> out+="1"; </tag>
@@ -74,24 +73,21 @@
       </one-of>
     </item>
   </rule>
-
-
   <rule id="lightstore" scope="private">
     <tag> out = "lightstore" </tag>
     <item>
-      <ruleref uri="#action"/>
+      <ruleref uri="#action" />
       <tag> out += "|" + rules.latest(); </tag>
     </item>
     <item>
-      <ruleref uri="#object"/>
+      <ruleref uri="#object" />
       <tag> out += "|" + rules.latest(); </tag>
     </item>
     <item>
-      <ruleref uri="#place"/>
+      <ruleref uri="#place" />
       <tag> out += "|" + rules.latest(); </tag>
     </item>
   </rule>
-
   <rule id="action" scope="private">
     <one-of>
       <item>
@@ -113,7 +109,6 @@
       </item>
     </one-of>
   </rule>
-
   <rule id="object" scope="private">
     <item repeat="0-1">
       <one-of>
@@ -122,8 +117,6 @@
         <item> les </item>
       </one-of>
     </item>
-
-
     <one-of>
       <item>
         lumières <tag> out="light"; </tag>
@@ -139,7 +132,6 @@
       </item>
     </one-of>
   </rule>
-
   <rule id="place" scope="private">
     <item repeat="0-1">
       <one-of>
@@ -149,8 +141,6 @@
         <item> de la </item>
       </one-of>
     </item>
-
-
     <one-of>
       <item>
         salon <tag> out="salon"; </tag>
@@ -169,5 +159,5 @@
       </item>
     </one-of>
   </rule>
-
+  <rule id="series" scope="private"></rule>
 </grammar>

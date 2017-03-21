@@ -30,7 +30,9 @@ namespace HouseOvent
 
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+#pragma warning disable CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             InitServer();
+#pragma warning restore CS4014 // Dans la mesure où cet appel n'est pas attendu, l'exécution de la méthode actuelle continue avant la fin de l'appel
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {

@@ -20,7 +20,7 @@ namespace KodiRpc.Methods
                 /// <param name="params_arg"> </param>
                 /// <param name="wait"> </param>
                 /// <returns>string</returns>
-        public async Task<string> ExecuteAddon(string addonid=null, KodiRpc.Addons.ExecuteAddon_params1 params_arg=null, bool? wait=null)
+        public async Task<string> ExecuteAddon(string addonid=null, object params_arg=null, bool? wait=null)
         {
              var jArgs = new JObject();
 
@@ -36,7 +36,7 @@ namespace KodiRpc.Methods
              if (params_arg != null)
              {
                  var jpropparams_arg = JToken.FromObject(params_arg, _client.Serializer);
-                 jArgs.Add(new JProperty("params_arg", jpropparams_arg));
+                 jArgs.Add(new JProperty("params", jpropparams_arg));
              }
              if (wait != null)
              {
@@ -69,7 +69,7 @@ namespace KodiRpc.Methods
              if (params_arg != null)
              {
                  var jpropparams_arg = JToken.FromObject(params_arg, _client.Serializer);
-                 jArgs.Add(new JProperty("params_arg", jpropparams_arg));
+                 jArgs.Add(new JProperty("params", jpropparams_arg));
              }
              if (wait != null)
              {
@@ -102,7 +102,7 @@ namespace KodiRpc.Methods
              if (params_arg != null)
              {
                  var jpropparams_arg = JToken.FromObject(params_arg, _client.Serializer);
-                 jArgs.Add(new JProperty("params_arg", jpropparams_arg));
+                 jArgs.Add(new JProperty("params", jpropparams_arg));
              }
              if (wait != null)
              {
