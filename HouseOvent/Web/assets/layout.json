@@ -1,0 +1,40 @@
+{
+  "left": [
+    {
+      "type": "weather",
+      "props": {
+        "city": "paris"
+      }
+    },
+    {
+      "type": "twitter-feed",
+      "props": {
+        "user": "RER_A"
+      }
+    }
+  ],
+  "right": [
+    {
+      "type": "time",
+      "props": null
+    },
+    {
+      "type": "next-stop",
+      "props": {
+        "station": "Le Bois Cadet",
+        "direction": "A",
+        "type": "Bus",
+        "ligne": "124"
+      }
+    },
+    {
+      "type": "next-stop",
+      "props": {
+        "station": "Le Bois Cadet",
+        "direction": "R",
+        "type": "Bus",
+        "ligne": "116"
+      }
+    }
+  ]
+}

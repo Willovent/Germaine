@@ -11,6 +11,8 @@ namespace KodiRpc
 
         public ISocketFactory SocketFactory { get; private set; }
 
+        public IConnectionStatus ConnectionStatus => this._connectionStatus;
+
         public PlatformServices()
         {
             SocketFactory = new SocketFactory();
@@ -24,14 +26,14 @@ namespace KodiRpc
             }
             catch (Exception ex)
             {
-                _connectionStatus.SetError(ex.Message);
+                ConnectionStatus.SetError(ex.Message);
                 throw;
             }
         }
 
         public async Task<WebResponse> GetResponse(WebRequest request)
         {
-            using (_connectionStatus.GetProgressToken())
+            using (ConnectionStatus.GetProgressToken())
             {
                 try
                 {
@@ -39,7 +41,7 @@ namespace KodiRpc
                 }
                 catch (Exception ex)
                 {
-                    _connectionStatus.SetError(ex.Message);
+                    ConnectionStatus.SetError(ex.Message);
                     throw;
                 }
             }
@@ -47,7 +49,7 @@ namespace KodiRpc
 
         private async Task<string> GetInternal(string uri)
         {
-            using (_connectionStatus.GetProgressToken())
+            using (ConnectionStatus.GetProgressToken())
             {
                 try
                 {
@@ -61,7 +63,7 @@ namespace KodiRpc
                 }
                 catch (Exception ex)
                 {
-                    _connectionStatus.SetError(ex.Message);
+                    ConnectionStatus.SetError(ex.Message);
                     throw;
                 }
             }
